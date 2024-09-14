@@ -1,12 +1,16 @@
 'use client';
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import { generateMnemonic } from "bip39";
+import { generateMnemonic, mnemonicToSeedSync } from "bip39";
 import { useEffect, useState } from "react";
+import useStore from "@/context/login";
+import { useToast } from "@/hooks/use-toast";
 
 function SecretPharse() {
     const [mnemonic, setMnemonic] = useState('');
     const [checked, setChecked] = useState(false);
+    const {setSeed} = useStore()
+    const { toast } = useToast()
 
     useEffect(() => {
         const generatedMnemonic = generateMnemonic();
@@ -18,10 +22,23 @@ function SecretPharse() {
     async function CopyPhrase() {
         try {
             await navigator.clipboard.writeText(mnemonic);
-            alert('Phrase Copied');
+            toast({
+                title: "Phrase Copied",
+                description: "Phrase copied to clipboard",
+            })
         } catch (error) {
             console.error('Failed to copy phrase:', error);
         }
+    }
+
+    function SubmitPhrase() {
+        const seed = mnemonicToSeedSync(mnemonic);
+        setSeed(seed.toString('hex'));
+        const user = {
+            isLoggedIn: true,
+            seed: seed.toString('hex'),
+        }
+        localStorage.setItem('app-user', JSON.stringify(user));
     }
 
     return (
@@ -49,7 +66,7 @@ function SecretPharse() {
                             I saved the phrase in a safe place
                         </label>
                     </div>
-                    <Button className="w-full mt-4" disabled={!checked}>
+                    <Button onClick={SubmitPhrase} className="w-full mt-4" disabled={!checked}>
                         Next
                     </Button>
                 </div>

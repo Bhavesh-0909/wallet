@@ -23,9 +23,7 @@ export default function Password() {
     function SubmitPassword() {
         if (passwordState === confirmPasswordState) {
             setPassword(passwordState);
-            LogIn();
             localStorage.setItem('app-password', passwordState);
-            localStorage.setItem('app-loged', isLoggedIn.toString());
         } else {
             alert('Passwords do not match'); 
         }
