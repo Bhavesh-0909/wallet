@@ -9,11 +9,12 @@ import { getPasswordLocaly } from "@/config/password";
 import { Wallet } from "ethers";
 
 const Home = () => {
-  const password = getPasswordLocaly();
+  const [password, setPassword] = useState<string | null>(null);
   let accountNo = parseInt(localStorage.getItem("accountNo") || "1");
   const [wallet, setWallet] = useState<Wallet[]>([]);
 
   useEffect(() => {
+    setPassword(getPasswordLocaly());
     if (!password) {
       window.location.href = "/password";
     }
@@ -50,38 +51,40 @@ const Home = () => {
   }
 
   return (
-    <div className="w-full h-full min-h-screen flex flex-col items-center gap-8 bg-background text-primary">
-      <div className="border-b border-slate-600 w-full flex justify-around items-center py-3">
+    <div className="w-full h-full min-h-screen flex flex-col items-center gap-8 bg-gradient-to-b from-blue-900 to-slate-900 text-white">
+      <div className="border-b border-slate-600 w-full flex justify-between items-center py-3 px-6">
         <Sheet>
           <SheetTrigger asChild>
-            <Avatar>
-              <AvatarImage src={`https://ui-avatars.com/api/?name=Account+${accountNo}&rounded=true&bold=true`} />
+            <Avatar className="cursor-pointer">
+              <AvatarImage src={`https://ui-avatars.com/api/?name=Account+${accountNo}&rounded=true&bold=true&background=4F46E5&color=fff`} />
               <AvatarFallback>CN</AvatarFallback>
             </Avatar>
           </SheetTrigger>
-          <SheetContent side="left">
-            <div className="pt-4 flex flex-col gap-2">
+          <SheetContent side="left" className="p-4">
+            <div className="pt-4 flex flex-col gap-4">
               {wallet.map((acc, index) => (
-                <div key={index} className="flex items-center justify-between w-full bg-muted rounded-[0.5rem]">
-                  <Button className="w-full">Account {index + 1}</Button>
+                <div key={index} className="flex items-center justify-between w-full bg-gray-700 hover:bg-gray-600 rounded-lg p-3">
+                  <Button className="w-full text-lg font-medium">Account {index + 1}</Button>
                 </div>
               ))}
             </div>
           </SheetContent>
         </Sheet>
-        <p>Account {accountNo}</p>
-        <Button onClick={addaccount}>add</Button>
+        <p className="text-lg font-semibold">Account {accountNo}</p>
+        <Button className="bg-indigo-600 hover:bg-indigo-500 transition" onClick={addaccount}>Add Account</Button>
       </div>
 
-      <div className="flex flex-col w-full px-10">
+      <div className="flex flex-col w-full px-6 gap-6">
         {wallet?.map((key, index) => (
           <div
             key={index}
-            className="flex flex-col justify-between w-full mx-auto max-w-[800px] p-2 border-b-border bg-muted rounded-[0.5rem]"
+            className="flex flex-col justify-between w-full max-w-[800px] mx-auto bg-gray-800 hover:bg-gray-700 transition p-6 border border-gray-600 rounded-lg shadow-md"
           >
-            <h2 className="text-xl font-bold">wallet {index + 1}</h2>
-            <h3 className="text-3xl font-bold">{key?.address}</h3>
-            <h3 className="text-3xl font-bold">{key?.privateKey}</h3>
+            <h2 className="text-xl font-semibold text-gray-300 mb-2">Wallet {index + 1}</h2>
+            <div className="text-lg font-mono break-all bg-gray-900 p-4 rounded-lg text-indigo-400 mb-4">
+              <p><strong>Address:</strong> {key?.address}</p>
+              <p><strong>Private Key:</strong> {key?.privateKey}</p>
+            </div>
           </div>
         ))}
       </div>
