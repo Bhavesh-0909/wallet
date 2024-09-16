@@ -13,6 +13,12 @@ const Home = () => {
   const [wallet, setWallet] = useState([]);
 
   useEffect(() => {
+    if (!password) {
+      window.location.href = "/password";
+    }
+  }, []);
+
+  useEffect(() => {
     const loadWallets = async () => {
       try {
         const seed = await getSeedDecryptedLocally(password);

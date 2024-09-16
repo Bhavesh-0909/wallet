@@ -27,6 +27,9 @@ const SecretPhrase = () => {
   };
 
   useEffect(() => {
+    if (!password) {
+      push("/password");
+    }
     setMnemonic(generateMnemonic());
   }, []);
 
