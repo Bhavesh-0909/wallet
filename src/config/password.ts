@@ -1,3 +1,4 @@
+'use client';
 export function setPasswordLocaly(password:string) {
     const encryptedPassword = btoa(password); 
     localStorage.setItem('userPassword', encryptedPassword);

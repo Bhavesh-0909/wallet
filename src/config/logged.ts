@@ -1,3 +1,4 @@
+'use client';
 export async function getLoggedLocaly() {  
     const encryptedSeed = await localStorage.getItem('user-seed');
     if (encryptedSeed) {
