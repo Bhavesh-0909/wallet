@@ -6,11 +6,12 @@ import { useEffect, useState } from "react";
 import { getSeedDecryptedLocally } from "@/config/logged";
 import { deriveEthereumPrivateKey, getEthereumWallet } from "@/config/etherium";
 import { getPasswordLocaly } from "@/config/password";
+import { Wallet } from "ethers";
 
 const Home = () => {
   const password = getPasswordLocaly();
   let accountNo = parseInt(localStorage.getItem("accountNo") || "1");
-  const [wallet, setWallet] = useState([]);
+  const [wallet, setWallet] = useState<Wallet[]>([]);
 
   useEffect(() => {
     if (!password) {
@@ -21,15 +22,19 @@ const Home = () => {
   useEffect(() => {
     const loadWallets = async () => {
       try {
+        if (!password) return;
         const seed = await getSeedDecryptedLocally(password);
         const wallets = [];
+        if (!seed) return;
         for (let i = 0; i < accountNo; i++) {
           const privateKey = deriveEthereumPrivateKey(seed, `m/44'/60'/${i}'/0/0`);
           const wallet = getEthereumWallet(privateKey);
           wallets.push(wallet);
         }
-
-        setWallet(wallets);
+        if (wallets.length > 0) {
+          setWallet(wallets);
+        }
+        
       } catch (error) {
         console.error("Error deriving wallets: ", error);
       }

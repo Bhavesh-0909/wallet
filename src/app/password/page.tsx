@@ -37,9 +37,12 @@ export default function Password() {
               })
         }
     }
-    const user = useRef(null);
+    const user = useRef<string | null>(null);
     useEffect(() => {
-        user.current = getLoggedLocaly() || null ;
+        const fetchLoggedUser = async () => {
+            user.current = await getLoggedLocaly() ;
+        };
+        fetchLoggedUser();
     }, []);
 
     function Submit() {

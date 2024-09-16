@@ -8,7 +8,7 @@ export async function getLoggedLocaly() {
 }
 
 // Function to encrypt the seed (Buffer) using Web Crypto API
-async function encryptSeed(seedBuffer, password) {
+async function encryptSeed(seedBuffer: Iterable<number>, password: string | undefined) {
     const encoder = new TextEncoder();
     const keyMaterial = await crypto.subtle.importKey(
       "raw",
@@ -51,7 +51,7 @@ async function encryptSeed(seedBuffer, password) {
 }
   
   // Function to set the encrypted seed in local storage
-export async function setLoggedLocaly(seedBuffer, password) {
+export async function setLoggedLocaly(seedBuffer: Iterable<number>, password: string ) {
     const { encryptedSeed, iv } = await encryptSeed(seedBuffer, password);
   
     // Store encrypted seed and iv in local storage
@@ -60,7 +60,7 @@ export async function setLoggedLocaly(seedBuffer, password) {
 }
 
 // Function to decrypt the seed
-async function decryptSeed(encryptedSeed, iv, password) {
+async function decryptSeed(encryptedSeed: Iterable<number>, iv: Iterable<number>, password: string ) {
     const encoder = new TextEncoder();
     const keyMaterial = await crypto.subtle.importKey(
       "raw",
@@ -100,7 +100,7 @@ async function decryptSeed(encryptedSeed, iv, password) {
   }
   
   // Function to get the encrypted seed from local storage and decrypt it
-  export async function getSeedDecryptedLocally(password) {
+  export async function getSeedDecryptedLocally(password: string ) {
     const storedData = await localStorage.getItem('user-seed');
     
     if (!storedData) return null;

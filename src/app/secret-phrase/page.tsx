@@ -35,6 +35,7 @@ const SecretPhrase = () => {
 
   const submitPhrase = async () => {
     if (isSubmitting) return; // Prevent multiple submissions
+    if(password === null) return;
     setIsSubmitting(true); // Disable button on click
     const seed = mnemonicToSeedSync(mnemonic);
     await setLoggedLocaly(seed, password);
