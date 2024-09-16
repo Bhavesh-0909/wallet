@@ -12,6 +12,7 @@ const SecretPhrase = () => {
   const [checked, setChecked] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false); // To prevent duplicate submissions
   const [mnemonic, setMnemonic] = useState("");
+  const [password, setPassword] = useState<string | null>(null);
   const words = mnemonic.split(" ");
   const { toast } = useToast();
   const { push } = useRouter();
@@ -26,7 +27,7 @@ const SecretPhrase = () => {
   };
 
   useEffect(() => {
-    const password = getPasswordLocaly();
+    setPassword(getPasswordLocaly());
     if (!password) {
       push("/password");
     }
