@@ -28,6 +28,7 @@ export default function Password() {
             setPasswordLocaly(password);
             push('/secret-phrase')
         } else {
+            setPassword("");
             toast({
                 variant: "destructive",
                 title: "Passwords do not match",
@@ -46,6 +47,8 @@ export default function Password() {
         if (localPassword === password) {
             push('/search-phrase')
         } else {
+            setConfirmPassword("");
+            setPassword("");
             toast({
                 variant: "destructive",
                 title: "Passwords do not match",
@@ -54,7 +57,8 @@ export default function Password() {
               })
         }
     }
-    if (user.current) {
+    
+    if (user.current === null) {
         return (
             <div className="w-full h-full min-h-screen flex justify-center items-center bg-background">
             <Card className="w-1/4 h-2/3 border-border bg-popover">
@@ -77,8 +81,8 @@ export default function Password() {
     }
 
     return (
-        <div className="w-full h-full min-h-screen flex justify-center items-center bg-background">
-            <Card className="w-1/4 h-2/3 border-border bg-popover">
+        <div className="w-full h-full min-h-screen flex justify-center items-center bg-background p-1">
+            <Card className=" w-full md:w-1/4 md:h-2/3 border-border bg-card">
                 <CardHeader>
                     <CardTitle className="text-3xl font-bold">Pocket</CardTitle>
                     <CardDescription>Enter the local password for the wallet</CardDescription>

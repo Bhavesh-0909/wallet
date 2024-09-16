@@ -1,5 +1,5 @@
-export function getLoggedLocaly() {
-    const encryptedSeed = localStorage.getItem('user-seed');
+export async function getLoggedLocaly() {  
+    const encryptedSeed = await localStorage.getItem('user-seed');
     if (encryptedSeed) {
         return encryptedSeed;
     } else {
@@ -100,16 +100,14 @@ async function decryptSeed(encryptedSeed, iv, password) {
   }
   
   // Function to get the encrypted seed from local storage and decrypt it
-  export async function getLoggedLocally(password) {
-    const storedData = localStorage.getItem('user');
+  export async function getSeedDecryptedLocally(password) {
+    const storedData = await localStorage.getItem('user-seed');
     
     if (!storedData) return null;
   
     const { iv, encryptedSeed } = JSON.parse(storedData);
   
     const decryptedSeedBuffer = await decryptSeed(encryptedSeed, iv, password);
-  
-    console.log('Decrypted Seed (Buffer):', decryptedSeedBuffer);
   
     return decryptedSeedBuffer;
   }
